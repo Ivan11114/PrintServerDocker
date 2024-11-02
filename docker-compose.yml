@@ -1,0 +1,43 @@
+version: '3.7'
+services:
+  cupsdocker:
+    image: printserver/cupsdocker
+    build:
+      context: .
+      dockerfile: cups/Dockerfile
+    container_name: cupsdocker
+    environment:
+      - TZ=${TIMEZONE}
+      - CUPS_ADMIN_USERNAME=${PRINT_SERVER_ADMIN_USERNAME}
+      - CUPS_ADMIN_PASSWRD=${PRINT_SERVER_ADMIN_PASSWRD}
+      - CUPS_REGULAR_USERS=${PRINT_SERVER_REGULAR_USERS}
+      - CUPS_ALLOWED_HOSTS=${PRINT_SERVER_ALLOWED_HOSTS}
+    ports:
+      - 631:631/tcp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    restart: unless-stopped
+  
+  sonedocker:
+    image: printserver/sanedocker
+    build:
+      context: .
+      dockerfile: sane/Dockerfile
+    container_name: sanedocker
+    environment:
+      - TZ=${TIMEZONE}
+      - SANE_ADMIN_USERNAME=${PRINT_SERVER_ADMIN_USERNAME}
+      - SANE_ADMIN_PASSWRD=${PRINT_SERVER_ADMIN_PASSWRD}
+      - SANE_REGULAR_USERS=${PRINT_SERVER_REGULAR_USERS}
+      - SANE_ALLOWED_HOSTS=${PRINT_SERVER_ALLOWED_HOSTS}
+    ports:
+      - 6566:6566/udp
+      - 6566:6566/tcp
+    sysctls:
+      - net.ipv4.conf.all.src_valid_mark=1
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    restart: unless-stopped
+ 

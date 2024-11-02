@@ -1,0 +1,18 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+        # Simple autofixing
+    -   id: trailing-whitespace
+    -   id: mixed-line-ending
+    -   id: end-of-file-fixer
+
+        # Check configuration files
+    -   id: check-yaml
+    -   id: check-xml
+    -   id: check-toml
+    -   id: check-json
+
+    -   id: check-merge-conflict
+    -   id: check-added-large-files
+
